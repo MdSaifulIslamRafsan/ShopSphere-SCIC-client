@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
 import Swal from "sweetalert2";
@@ -16,14 +17,12 @@ const AuthProvider = ({ children }) => {
 
   const provider = new GoogleAuthProvider();
 
-
-
   const handleGoogleLogin = () => {
     signInWithPopup(auth, provider)
       .then(() => {
         Swal.fire({
           title: "Good job!",
-          text: "You clicked the button!",
+          text: "Google Login Successful!",
           icon: "success",
         });
       })
@@ -39,6 +38,9 @@ const AuthProvider = ({ children }) => {
   const handleRegister = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
+  const handleLogin = (email, password) =>{
+    return signInWithEmailAndPassword(auth, email, password)
+  }
   useEffect(() => {
     const unSubscribe = () => {
       onAuthStateChanged(auth, (user) => {
@@ -51,7 +53,7 @@ const AuthProvider = ({ children }) => {
     };
   }, []);
 
-  const userInfo = { user, loading, handleGoogleLogin, handleRegister };
+  const userInfo = { user, loading, handleGoogleLogin, handleRegister, handleLogin };
   return (
     <AuthContext.Provider value={userInfo}>{children}</AuthContext.Provider>
   );

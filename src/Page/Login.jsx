@@ -1,25 +1,19 @@
 import { Link } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
 import { useForm } from "react-hook-form";
-import auth from "../Firebase.config";
-import { updateProfile } from "firebase/auth";
 import Swal from "sweetalert2";
 
-const Register = () => {
-  const { handleRegister, handleGoogleLogin } = useAuth();
+const Login = () => {
+  const { handleGoogleLogin, handleLogin } = useAuth();
   const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = (data) => {
-    const { username, photoUrl, email, password } = data;
-    handleRegister(email, password)
+    const { email, password } = data;
+    handleLogin(email, password)
       .then(() => {
-        updateProfile(auth.currentUser, {
-          displayName: username,
-          photoURL: photoUrl,
-        });
         Swal.fire({
           title: "Good job!",
-          text: "You've successfully registered!",
+          text: "You've successfully logged in!",
           icon: "success",
         });
         reset();
@@ -36,38 +30,12 @@ const Register = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <div className="w-full mx max-w-md p-8 space-y-3 rounded-xl bg-gray-200 text-gray-800">
-        <h1 className="text-2xl font-bold text-center">Register page</h1>
+      <div className="w-full max-w-md p-8 space-y-3 rounded-xl bg-gray-200 text-gray-800">
+        <h1 className="text-2xl font-bold text-center">Login Page</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-1 text-sm">
-            <label htmlFor="username" className="block text-gray-600">
-              Username
-            </label>
-            <input
-              {...register("username", { required: true })}
-              type="text"
-              name="username"
-              id="username"
-              placeholder="Username"
-              className="w-full px-4 py-3 rounded-md border-gray-300 bg-gray-50 text-gray-800 focus:border-violet-600"
-            />
-          </div>
-          <div className="space-y-1 text-sm">
-            <label htmlFor="photoUrl" className="block text-gray-600">
-              Photo URL
-            </label>
-            <input
-              {...register("photoUrl", { required: true })}
-              type="text"
-              name="photoUrl"
-              id="photoUrl"
-              placeholder="Photo URL"
-              className="w-full px-4 py-3 rounded-md border-gray-300 bg-gray-50 text-gray-800 focus:border-violet-600"
-            />
-          </div>
-          <div className="space-y-1 text-sm">
             <label htmlFor="email" className="block text-gray-600">
-              Email
+              email
             </label>
             <input
               {...register("email", { required: true })}
@@ -90,9 +58,14 @@ const Register = () => {
               placeholder="Password"
               className="w-full px-4 py-3 rounded-md border-gray-300 bg-gray-50 text-gray-800 focus:border-violet-600"
             />
+            <div className="flex justify-end text-xs text-gray-600">
+              <a rel="noopener noreferrer" href="#">
+                Forgot Password?
+              </a>
+            </div>
           </div>
-          <button className="block w-full p-3 text-center rounded-sm text-gray-50 btn-primary btn">
-            Sign Up
+          <button className="block w-full p-3 text-center rounded-sm text-gray-50 btn btn-primary">
+            Sign in
           </button>
         </form>
         <div className="flex items-center pt-4 space-x-1">
@@ -121,11 +94,11 @@ const Register = () => {
         <p className="text-center sm:px-6 text-gray-600">
           Don't have an account?{" "}
           <Link
+            to={"/register"}
             rel="noopener noreferrer"
-            to={"/login"}
-            className="underline text-blue-700"
+            className="underline text-blue-800"
           >
-            Login
+            Sign up
           </Link>
         </p>
       </div>
@@ -133,4 +106,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;
