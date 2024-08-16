@@ -10,7 +10,8 @@ const Home = () => {
     const [itemsPerPage, setItemsPerPage] = useState(9);
     const [currentPage, setCurrentPage] = useState(1);
     const [count, setCount] = useState(0);
-  
+    const [search, setSearch] = useState("");
+    const [searchText, setSearchText] = useState("");
 
     const numberOfPages = Math.ceil(count / itemsPerPage);
  
@@ -21,15 +22,32 @@ const Home = () => {
         .map((element) => element + 1),
     ];
     const { data: productsData = [], isLoading } = useQuery({
-        queryKey: ["productsData" ,  currentPage],
+        queryKey: ["productsData" ,  currentPage, search],
         queryFn: () =>
             axios.get(`http://localhost:3000/products?page=${currentPage}&size=${itemsPerPage}&search=${search}`).then((res) => {
             
             return res.data;
           }),
       });
-   
-      
+      const handleReset = () => {
+        setSearch("");
+        setSearchText("");
+      };
+    
+      const { register, handleSubmit } = useForm();
+    
+      const onSubmit = () => {
+        setSearch(searchText);
+      };
+      useEffect(() => {
+        const getJobsCount = async () => {
+          const { data } = await axios.get(
+            `http://localhost:3000/products-count?search=${search}`
+          );
+          setCount(data.count);
+        };
+        getJobsCount();
+      }, [search]);
     
       const handlePaginationBtn = (value) => {
         setCurrentPage(value);
@@ -49,7 +67,32 @@ const Home = () => {
 if (isLoading) return <div className="flex justify-center items-center h-screen"><span className="loading loading-spinner loading-lg"></span></div>;
     return (
         <>
-    
+    <div className="flex flex-col md:flex-row justify-center items-center gap-5 ">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="flex p-1 overflow-hidden border rounded-lg    focus-within:ring focus-within:ring-opacity-40 focus-within:border-blue-400 focus-within:ring-blue-300">
+              <input
+                {...register("search")}
+                className="px-6 py-2 placeholder-gray-500  outline-none focus:placeholder-transparent"
+                type="text"
+                onChange={(e) => setSearchText(e.target.value)}
+                value={searchText}
+                name="search"
+                placeholder="Enter Job Title"
+                aria-label="Enter Job Title"
+              />
+              <AwesomeButton type="primary">Search</AwesomeButton>
+            </div>
+          </form>
+          <AwesomeButton
+            onPress={() => {
+              handleReset();
+            }}
+            type="primary"
+          >
+            Reset
+          </AwesomeButton>
+          {/* <button onClick={handleReset} className='btn btn-outline text-white bg-blue-500'>Reset</button> */}
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 my-10">
             {
                 productsData.map((product , index)=> <ProductCard key={index} product={product}></ProductCard>)
