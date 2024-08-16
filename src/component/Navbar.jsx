@@ -20,7 +20,7 @@ const Navbar = () => {
     return (
         <div className="navbar max-w-[1440px] w-11/12 lg:w-10/12 mx-auto">
         <div className="flex-1">
-          <Link to={'/'} className="font-bold flex items-center text-xl"> <img className="w-10" src="/advantages-of-ecommerce-shopping-cart.png" alt="" />Sh<span className='text-red-600 text-3xl'>o</span>pSph<span className='text-red-600 text-3xl'>e</span>re</Link>
+          <Link to={'/'} className="font-bold flex items-center md:text-xl"> <img className="w-6 md:w-10" src="/advantages-of-ecommerce-shopping-cart.png" alt="" />Sh<span className='text-red-600 md:text-3xl'>o</span>pSph<span className='text-red-600 md:text-3xl'>e</span>re</Link>
         </div>
         <div className="flex-none">
         <div className="navbar-start">
