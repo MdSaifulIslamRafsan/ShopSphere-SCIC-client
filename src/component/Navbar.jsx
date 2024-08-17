@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import useAuth from '../Hooks/useAuth';
 
 const Navbar = () => {
-    const {user} = useAuth();
+    const {user, handleLogout} = useAuth();
     const navLinks = (
         <>
           <li>
@@ -84,7 +84,9 @@ navLinks
             </div>
           </div>
           <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+            {
+              user ?  <>
+              <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
                 <img
                   alt="Tailwind CSS Navbar component"
@@ -99,8 +101,12 @@ navLinks
                 {user?.displayName}
                 </a>
               </li>
-              <li><a>Logout</a></li>
-            </ul>
+                <button onClick={handleLogout} className='btn btn-primary'><a>Logout</a></button>
+             
+             
+            </ul></> : <Link to={'login'} className='btn btn-primary'><a>Login</a></Link>
+            }
+           
           </div>
         </div>
       </div>

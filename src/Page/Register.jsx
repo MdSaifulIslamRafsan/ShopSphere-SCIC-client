@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
 import { useForm } from "react-hook-form";
 import auth from "../Firebase.config";
@@ -8,11 +8,13 @@ import Swal from "sweetalert2";
 const Register = () => {
   const { handleRegister, handleGoogleLogin } = useAuth();
   const { register, handleSubmit, reset } = useForm();
-
+  const location = useLocation();
+  const navigate = useNavigate();
   const onSubmit = (data) => {
     const { username, photoUrl, email, password } = data;
     handleRegister(email, password)
       .then(() => {
+        navigate(location?.state ? location?.state : '/' )
         updateProfile(auth.currentUser, {
           displayName: username,
           photoURL: photoUrl,
@@ -104,7 +106,7 @@ const Register = () => {
         </div>
         <div className="flex justify-center space-x-4">
           <button
-            onClick={handleGoogleLogin}
+            onClick={()=>handleGoogleLogin(navigate , location)}
             aria-label="Log in with Google"
             className="p-3 rounded-sm btn text-base w-full flex items-center btn-primary"
           >

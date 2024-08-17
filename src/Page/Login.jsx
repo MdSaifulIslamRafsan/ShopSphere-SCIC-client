@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -6,11 +6,13 @@ import Swal from "sweetalert2";
 const Login = () => {
   const { handleGoogleLogin, handleLogin } = useAuth();
   const { register, handleSubmit, reset } = useForm();
-
+  const location = useLocation();
+  const navigate = useNavigate();
   const onSubmit = (data) => {
     const { email, password } = data;
     handleLogin(email, password)
       .then(() => {
+        navigate(location?.state ? location?.state : '/' )
         Swal.fire({
           title: "Good job!",
           text: "You've successfully logged in!",
@@ -77,7 +79,7 @@ const Login = () => {
         </div>
         <div className="flex justify-center space-x-4">
           <button
-            onClick={handleGoogleLogin}
+            onClick={()=>handleGoogleLogin(navigate , location)}
             aria-label="Log in with Google"
             className="p-3 rounded-sm btn text-base w-full flex items-center btn-primary"
           >

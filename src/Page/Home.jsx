@@ -43,7 +43,7 @@ const Home = () => {
     queryFn: () =>
       axios
         .get(
-          `http://localhost:3000/products?page=${currentPage}&size=${itemsPerPage}&search=${search}&category=${category}&minPrice=${minPrice}&maxPrice=${maxPrice}&order=${sortOrder}&brand=${brandData}`
+          `https://shop-sphere-scic-server.vercel.app/products?page=${currentPage}&size=${itemsPerPage}&search=${search}&category=${category}&minPrice=${minPrice}&maxPrice=${maxPrice}&order=${sortOrder}&brand=${brandData}`
         )
         .then((res) => {
           return res.data;
@@ -78,7 +78,7 @@ const Home = () => {
   useEffect(() => {
     const getJobsCount = async () => {
       const { data } = await axios.get(
-        `http://localhost:3000/products-count?search=${search}&category=${category}&minPrice=${minPrice}&maxPrice=${maxPrice}&brand=${brandData}`
+        `https://shop-sphere-scic-server.vercel.app/products-count?search=${search}&category=${category}&minPrice=${minPrice}&maxPrice=${maxPrice}&brand=${brandData}`
       );
       setCount(data.count);
     };

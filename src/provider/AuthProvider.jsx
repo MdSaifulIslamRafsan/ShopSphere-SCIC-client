@@ -5,6 +5,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
 } from "firebase/auth";
 import Swal from "sweetalert2";
 import auth from "./../Firebase.config";
@@ -17,9 +18,10 @@ const AuthProvider = ({ children }) => {
 
   const provider = new GoogleAuthProvider();
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = (navigate , location) => {
     signInWithPopup(auth, provider)
       .then(() => {
+        navigate(location?.state ? location?.state : '/' )
         Swal.fire({
           title: "Good job!",
           text: "Google Login Successful!",
@@ -53,7 +55,27 @@ const AuthProvider = ({ children }) => {
     };
   }, []);
 
-  const userInfo = { user, loading, handleGoogleLogin, handleRegister, handleLogin };
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        Swal.fire({
+          title: "Good job!",
+          text: "You've been successfully logged out",
+          icon: "success",
+        });
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: errorMessage,
+        });
+      });
+  };
+
+
+  const userInfo = { user, loading, handleGoogleLogin, handleRegister, handleLogin, handleLogout };
   return (
     <AuthContext.Provider value={userInfo}>{children}</AuthContext.Provider>
   );
