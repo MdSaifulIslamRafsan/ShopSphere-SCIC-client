@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AwesomeButton } from "react-awesome-button";
 import "react-awesome-button/dist/styles.css";
+import Sort from "../component/Sort";
 
 const Home = () => {
   const [itemsPerPage, setItemsPerPage] = useState(9);
@@ -15,8 +16,8 @@ const Home = () => {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [category, setCategory] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
   const numberOfPages = Math.ceil(count / itemsPerPage);
-
   console.log(minPrice, maxPrice);
 
   const pages = [
@@ -32,11 +33,12 @@ const Home = () => {
       category,
       minPrice,
       maxPrice,
+      sortOrder
     ],
     queryFn: () =>
       axios
         .get(
-          `http://localhost:3000/products?page=${currentPage}&size=${itemsPerPage}&search=${search}&category=${category}&minPrice=${minPrice}&maxPrice=${maxPrice}`
+          `http://localhost:3000/products?page=${currentPage}&size=${itemsPerPage}&search=${search}&category=${category}&minPrice=${minPrice}&maxPrice=${maxPrice}&order=${sortOrder}`
         )
         .then((res) => {
           return res.data;
@@ -169,6 +171,7 @@ const Home = () => {
             Search
           </button>
         </form>
+        <Sort setSortOrder={setSortOrder} sortOrder={sortOrder}></Sort>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 my-10">
