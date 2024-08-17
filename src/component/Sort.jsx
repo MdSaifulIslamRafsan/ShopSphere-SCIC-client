@@ -7,7 +7,7 @@ const Sort = ({sortOrder,setSortOrder}) => {
         onChange={(e) => setSortOrder(e.target.value)}
         id="sortOrder"
         value={sortOrder}
-        className="border p-2 rounded-md"
+        className="border p-2 w-full rounded-md"
       >
         <option value="">Normal</option>
         <option value="Low to High">Low to High Price</option>
