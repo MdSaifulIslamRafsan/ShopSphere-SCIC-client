@@ -14,7 +14,7 @@ const Register = () => {
     const { username, photoUrl, email, password } = data;
     handleRegister(email, password)
       .then(() => {
-        navigate(location?.state ? location?.state : '/' )
+        navigate(location?.state?.pathname ? location.state.pathname : '/');
         updateProfile(auth.currentUser, {
           displayName: username,
           photoURL: photoUrl,

@@ -14,14 +14,13 @@ export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   const provider = new GoogleAuthProvider();
 
   const handleGoogleLogin = (navigate , location) => {
     signInWithPopup(auth, provider)
       .then(() => {
-        navigate(location?.state ? location?.state : '/' )
+        navigate(location?.state?.pathname ? location.state.pathname : '/');
         Swal.fire({
           title: "Good job!",
           text: "Google Login Successful!",
@@ -43,18 +42,16 @@ const AuthProvider = ({ children }) => {
   const handleLogin = (email, password) =>{
     return signInWithEmailAndPassword(auth, email, password)
   }
+  
   useEffect(() => {
-    const unSubscribe = () => {
-      onAuthStateChanged(auth, (user) => {
-        setUser(user);
-        setLoading(false);
-      });
-    };
+    const unSubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
     return () => {
       unSubscribe();
     };
   }, []);
-
+  
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
@@ -73,9 +70,10 @@ const AuthProvider = ({ children }) => {
         });
       });
   };
+  
 
 
-  const userInfo = { user, loading, handleGoogleLogin, handleRegister, handleLogin, handleLogout };
+  const userInfo = { user, handleGoogleLogin, handleRegister, handleLogin, handleLogout };
   return (
     <AuthContext.Provider value={userInfo}>{children}</AuthContext.Provider>
   );

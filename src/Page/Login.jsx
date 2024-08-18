@@ -12,7 +12,7 @@ const Login = () => {
     const { email, password } = data;
     handleLogin(email, password)
       .then(() => {
-        navigate(location?.state ? location?.state : '/' )
+        navigate(location?.state?.pathname ? location.state.pathname : '/');
         Swal.fire({
           title: "Good job!",
           text: "You've successfully logged in!",
