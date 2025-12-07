@@ -3,8 +3,8 @@
 - Clone the Repository:
 
 ```sh
-git clone https://github.com/MdSaifulIslamRafsan/SOULMATE-client-side.git
-cd SOULMATE-client-side
+https://github.com/MdSaifulIslamRafsan/ShopSphere-SCIC-client
+cd ShopSphere-SCIC-client
 ```
 
 - Install Dependencies:
